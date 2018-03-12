@@ -91,6 +91,7 @@ class SdA(object):
 
     def pretrain(self, lr=0.1, corruption_level=0.3, epochs=100):
         for i in xrange(self.n_layers):
+            print "Layer %d"%i
             if i == 0:
                 layer_input = self.x
             else:
@@ -100,6 +101,7 @@ class SdA(object):
 
             for epoch in xrange(epochs):
                 da.train(lr=lr, corruption_level=corruption_level, input=layer_input)
+                print "     Layer %d ephochs %d Norm(W) " % (i,epoch)
 
     def finetune(self, lr=0.1, epochs=100):
         layer_input = self.sigmoid_layers[-1].sample_h_given_v()

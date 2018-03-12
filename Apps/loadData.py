@@ -7,6 +7,7 @@ CLASS_SPHERE = 3;
 CLASS_PALM = 4;
 CLASS_LATERAL = 5;
 LABEL_CLASS=["Cylinder","Hook","Tip","Palm","Lateral"]
+LABEL_CLASS_CODE=[CLASS_CYLINDER,CLASS_HOOK,CLASS_TIP,CLASS_PALM,CLASS_LATERAL]
 
 Path = [{"ch1":"../Data/female1/cyl_ch1.csv","ch2":"../Data/female1/cyl_ch2.csv","SignalClass":CLASS_CYLINDER},
 {"ch1":"../Data/female1/hook_ch1.csv","ch2":"../Data/female1/hook_ch2.csv","SignalClass":CLASS_HOOK},

@@ -43,6 +43,8 @@ Path = [{"ch1":"../Data/female1/cyl_ch1.csv","ch2":"../Data/female1/cyl_ch2.csv"
 
 Data = list()
 SignalClass = []
+DataTest = list()
+SignalClassTest = []
 for x in xrange(0,len(Path)):
 	with open(Path[x]["ch1"], 'rb') as f:
 		reader = csv.reader(f)
@@ -51,9 +53,15 @@ for x in xrange(0,len(Path)):
 		reader = csv.reader(f)
 		listCh2 = list(reader)
 	AllData = list()
-	for n in xrange(0,len(listCh1)):
+	TestData = list()
+	for n in xrange(0,len(listCh1)-10):
 		AllData += [listCh1[n]+listCh2[n]]
 		SignalClass.append(Path[x]["SignalClass"])
+	for n in xrange(len(listCh1)-10,len(listCh1)):
+		TestData += [listCh1[n]+listCh2[n]]
+		SignalClassTest.append(Path[x]["SignalClass"])
 	# AllData = [float(x.strip('"')) for x in AllData]
 	Data = Data + AllData
+	DataTest = DataTest + TestData
 Data = [[float(y.strip('"')) for y in x] for x in Data]
+DataTest = [[float(y.strip('"')) for y in x] for x in DataTest]

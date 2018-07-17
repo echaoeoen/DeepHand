@@ -65,6 +65,8 @@ def weight_variable(input_dim, output_dim, name=None, stretch_factor=1, dtype=tf
     Reference: http://arxiv.org/pdf/1206.5533v2.pdf. If sigmoid is used as the activation
     function, then a stretch_factor of 4 is recommended."""
     limit = sqrt(6 / (input_dim + output_dim))
+    print(limit,-(stretch_factor * limit))
+    
     initial = tf.random_uniform(shape=[input_dim, output_dim],
                                 minval=-(stretch_factor * limit),
                                 maxval=stretch_factor * limit,
@@ -125,7 +127,10 @@ class NNLayer:
     @property
     def is_pretrained(self):
         return self.weights is not None and self.biases is not None
-
+    def set_weights(self,weights):
+        self.weights = weights
+    def set_biases(self,biases):
+        self.biases=biases
     def set_wb(self, weights, biases):
         """Used during pre-training for convenience."""
         self.weights = weights      # Evaluated numpy array
@@ -322,9 +327,17 @@ class SDAutoencoder:
 
         print("Beginning to write to file.")
         for x_batch in x_test_gen:
-            self.write_data(sess.run(x_encoded, feed_dict={x_input: x_batch}), filepath)
+            data= sess.run(x_encoded, feed_dict={x_input: x_batch})
+            self.write_data(data, filepath)
         print("Written encoded input to file %s" % filepath)
 
+    @stopwatch
+    def transformX(self, x_test):
+        sess = self.sess
+        x_input = tf.placeholder(tf.float32, shape=[None, self.input_dim])
+        x_encoded = self.get_encoded_input(x_input, depth=-1, use_variables=False)
+        data= sess.run(x_encoded, feed_dict={x_input: [x_test]})
+        return data[0]
     def write_encoded_input_with_ys(self, filepath_x, filepath_y, xy_test_gen):
         """For use in testing MNIST. Writes the encoded x values along with their corresponding
         y values to file.
